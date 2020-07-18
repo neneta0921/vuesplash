@@ -75,12 +75,12 @@ class Photo extends Model
         return $this->belongsTo('App\User', 'user_id', 'id', 'users');
     }
 
-    /**
-     * アクセサ - url
-     * @return string
-     */
-    public function getUrlAttribute()
-    {
-        return Storage::url($this->attributes['filename']);
-    }
+/**
+ * アクセサ - url
+ * @return string
+ */
+public function getUrlAttribute()
+{
+    return Storage::url('photos/' . $this->attributes['filename']);
+}
 }
