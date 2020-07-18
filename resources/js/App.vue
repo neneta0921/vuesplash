@@ -5,6 +5,7 @@
     </header>
     <main>
       <div class="container">
+        <Message /> <!-- ★ 追加 -->
         <RouterView />
       </div>
     </main>
@@ -13,11 +14,13 @@
 </template>
 
 <script>
+import Message from './components/Message.vue' // ★ 追加
 import Navbar from './components/Navbar.vue'
 import Footer from './components/Footer.vue'
 import { INTERNAL_SERVER_ERROR } from './util'
 export default {
   components: {
+    Message, // ★ 追加
     Navbar,
     Footer
   },

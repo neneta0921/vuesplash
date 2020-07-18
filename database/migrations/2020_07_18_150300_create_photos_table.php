@@ -14,7 +14,7 @@ class CreatePhotosTable extends Migration
     public function up()
     {
         Schema::create('photos', function (Blueprint $table) {
-            $table->id();
+            $table->string('id', 20)->primary();
             $table->foreignId('user_id')->constrained();
             $table->string('filename');
             $table->timestamps();

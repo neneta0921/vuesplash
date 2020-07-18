@@ -15,7 +15,7 @@ class PhotoController extends Controller
     public function __construct()
     {
         // 認証が必要
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['index', 'download']);
     }
 
     /**
@@ -34,10 +34,9 @@ class PhotoController extends Controller
         // 本来の拡張子を組み合わせてファイル名とする
         $photo->filename = $photo->id . '.' . $extension;
 
-        // S3にファイルを保存する
-        // 第三引数の'public'はファイルを公開状態で保存するため
-        Storage::disk()
-            ->putFileAs('', $request->photo, $photo->filename, 'public');
+        // storage/app/public配下に保存する
+        //Storage::putFileAs('photos', $photo->filename, 'public');
+        $request->photo->storeAs('photos', $photo->filename, 'public');
 
         // データベースエラー時にファイル削除を行うため
         // トランザクションを利用する
@@ -56,5 +55,37 @@ class PhotoController extends Controller
         // リソースの新規作成なので
         // レスポンスコードは201(CREATED)を返却する
         return response($photo, 201);
+    }
+
+    /**
+     * 写真一覧
+     */
+    public function index()
+    {
+        $photos = Photo::with(['owner'])
+            ->orderBy(Photo::CREATED_AT, 'desc')->paginate();
+
+        return $photos;
+    }
+
+    /**
+     * 写真ダウンロード
+     * @param Photo $photo
+     * @return \Illuminate\Http\Response
+     */
+    public function download(Photo $photo)
+    {
+        // 写真の存在チェック
+        if (! Storage::exists($photo->filename)) {
+            abort(404);
+        }
+
+        $disposition = 'attachment; filename="' . $photo->filename . '"';
+        $headers = [
+            'Content-Type' => 'application/octet-stream',
+            'Content-Disposition' => $disposition,
+        ];
+
+        return Storage::download($photo->filename);
     }
 }

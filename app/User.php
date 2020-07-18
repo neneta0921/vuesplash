@@ -45,4 +45,8 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Photo');
     }
+
+    protected $visible = [
+        'name',
+    ];
 }
