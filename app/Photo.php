@@ -11,6 +11,19 @@ class Photo extends Model
     /** プライマリキーの型 */
     protected $keyType = 'string';
 
+    /** JSONに含める属性 */
+    protected $visible = [
+        'id', 'owner', 'url',
+    ];
+
+    /** JSONに含める属性 */
+    protected $appends = [
+        'url',
+    ];
+
+    /** 1ページあたりのアイテム数 */
+    protected $perPage = 15;
+
     /** IDの桁数 */
     const ID_LENGTH = 12;
 
@@ -70,9 +83,4 @@ class Photo extends Model
     {
         return Storage::url($this->attributes['filename']);
     }
-
-    /** JSONに含める属性 */
-    protected $appends = [
-      'url',
-    ];
 }
