@@ -31,3 +31,10 @@ Route::put('/photos/{id}/like', 'PhotoController@like')->name('photo.like');
 
 // いいね解除
 Route::delete('/photos/{id}/like', 'PhotoController@unlike');
+
+// トークンリフレッシュ
+Route::get('/reflesh-token', function (Illuminate\Http\Request $request) {
+  $request->session()->regenerateToken();
+
+  return response()->json();
+});
