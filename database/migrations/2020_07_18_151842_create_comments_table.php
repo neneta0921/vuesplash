@@ -17,6 +17,7 @@ class CreateCommentsTable extends Migration
             $table->id();
             $table->string('photo_id');
             $table->foreignId('user_id')->constrained();
+            $table->text('content');
             $table->timestamps();
 
             $table->foreign('photo_id')->references('id')->on('photos');

@@ -22,3 +22,12 @@ Route::get('/photos', 'PhotoController@index')->name('photo.index');
 
 // 写真詳細
 Route::get('/photos/{id}', 'PhotoController@show')->name('photo.show');
+
+// コメント
+Route::post('/photos/{photo}/comments', 'PhotoController@addComment')->name('photo.comment');
+
+// いいね
+Route::put('/photos/{id}/like', 'PhotoController@like')->name('photo.like');
+
+// いいね解除
+Route::delete('/photos/{id}/like', 'PhotoController@unlike');
